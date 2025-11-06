@@ -6,7 +6,11 @@
 
 * **1차 분류:** 텍스트의 유해성(Toxic) 여부 판단 (유해 / 정상)  
 * **2차 분류:** 유해 텍스트의 구체적인 유형 분류 (예: 성별, 지역, 연령, 정치 등 7가지)  
+<<<<<<< HEAD
 * **저장소 URL:** [https://github.com/zcx1119son/Korean-Toxicity-Model](https://github.com/zcx1119son/Korean-Toxicity-Model)
+=======
+* **저장소 URL:** [https://github.com/zcx1119son/Korean-Toxicity-Model](https://www.google.com/search?q=https://github.com/zcx1119son/Korean-Toxicity-Model)
+>>>>>>> c4b3f38bfa80531cba58e0d9927ee294f90a8ae4
 
 ## **⚙️ 기술 스택 (Tech Stack)**
 
@@ -37,7 +41,11 @@ BERT 기반의 2단계 분류 구조를 통해 유해성 판단 및 유형 분�
 
 ### **1\. 📂 코드 및 의존성 파일**
 
+<<<<<<< HEAD
 * **메인 코드 (.ipynb):** [Korean\_Toxic\_Text\_Classification.ipynb](https://github.com/zcx1119son/Korean-Toxicity-Model/blob/master/Korean_Toxic_Text_Classification.ipynb)  
+=======
+* **메인 코드 (.ipynb):** [Korean\_Toxic\_Text\_Classification.ipynb](https://www.google.com/search?q=https://github.com/zcx1119son/Korean-Toxicity-Model/blob/master/Korean_Toxic_Text_Classification.ipynb)  
+>>>>>>> c4b3f38bfa80531cba58e0d9927ee294f90a8ae4
 * **환경 설정:** requirements.txt (프로젝트 재현을 위한 필수 라이브러리 목록)
 
 ### **2\. 💾 대용량 자료 다운로드 링크 (필수)**
@@ -45,7 +53,11 @@ BERT 기반의 2단계 분류 구조를 통해 유해성 판단 및 유형 분�
 | 자원 | 용량 | 링크 |
 | :---- | :---- | :---- |
 | **학습 데이터셋 (AI Hub)** | 대용량 | [AI Hub 다운로드 페이지 (국가기록물 대상)](https://www.aihub.or.kr/aihubdata/data/view.do?pageIndex=1&currMenu=115&topMenu=100&srchOptnCnd=OPTNCND001&searchKeyword=%EA%B5%AD%EA%B0%80%EA%B8%B0%EB%A1%9D%EB%AC%BC&srchDetailCnd=DETAILCND001&srchOrder=ORDER001&srchPagePer=20&aihubDataSe=data&dataSetSn=71788) |
+<<<<<<< HEAD
 | **학습된 모델 파일 (772MB)** | **약 772MB** | [Google Drive 모델 파일 다운로드](https://drive.google.com/drive/folders/1dL8Y7zl4BddPBDbXeHF5BwB5hf-1N_b7?usp=sharing) |
+=======
+| **학습된 모델 파일 (772MB)** | **약 772MB** | [Google Drive 모델 파일 다운로드](https://www.google.com/search?q=https://drive.google.com/drive/folders/1dL8Y7zl4BddPBDbXeHF5BwB5hf-1N_b7?usp%3Dsharing) |
+>>>>>>> c4b3f38bfa80531cba58e0d9927ee294f90a8ae4
 | **상세 PPT/PDF 자료** | 보조 보고서 | [Google Drive 상세 자료 링크](https://drive.google.com/drive/folders/1c32AJIo_1g993qb2vQyJK4hUfzu8aug4?usp=sharing) |
 
 ### **3\. 재현 단계 (Replication Steps)**
@@ -53,4 +65,10 @@ BERT 기반의 2단계 분류 구조를 통해 유해성 판단 및 유형 분�
 1. **Repository Clone:** 본 GitHub 저장소를 로컬로 복제합니다.  
 2. **환경 설정:** requirements.txt를 사용하여 Python 환경을 설정합니다. (pip install \-r requirements.txt)  
 3. **파일 다운로드:** 상단의 **AI Hub 데이터셋**과 **Google Drive 모델 파일**을 모두 다운로드합니다.  
+<<<<<<< HEAD
 4. **코드 실행:** Korean\_Toxic\_Text\_Classification.ipynb 파일을 열어 전처리, 모델 로드, 예측 결과를 순서대로 확인합니다.
+=======
+4. **코드 실행:** Korean\_Toxic\_Text\_Classification.ipynb 파일을 열어 전처리, 모델 로드, 예측 결과를 순서대로 확인합니다.
+
+© zcx1119son
+>>>>>>> c4b3f38bfa80531cba58e0d9927ee294f90a8ae4
