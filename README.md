@@ -152,7 +152,7 @@ python "Driver Drowsiness [Detection.py](http://detection.py/)"
 | 자료 | 설명 | 링크 |
 | --- | --- | --- |
 | **졸업 작품 전체 자료** | 발표 **PPT**, 최종 보고서 **PDF**, 등 모든 프로젝트 문서 자료 | [Google Drive 상세 자료 링크](https://drive.google.com/drive/folders/1b5E_JoIQbwww3fD74A_qyX92ET1qoz7u?usp=sharing) |
-| **소스 코드 저장소** | 프로젝트 **Python** 소스 코드 및 **README** | [Github사이트 링크](https://github.com/zcx1119son/DL-Drowsiness-Detection-Capstone)  |
+| **소스 코드 저장소** | 프로젝트 **Python** 소스 코드 및 **README** | [Git hub사이트 링크](https://github.com/zcx1119son/DL-Drowsiness-Detection-Capstone)  |
 
 ### **2. 핵심 알고리즘 및 학술적 참고 문헌**
 
