@@ -87,4 +87,4 @@ BERT 기반의 2단계 분류 구조를 통해 유해성 판단 및 유형 분�
 - **현재 한계:** 2차 분류(7가지 유형)의 경우, 유형별로 데이터 희소성이 더욱 심하여 1차 분류 대비 성능(F1-Score 0.88)에 한계가 있었습니다.
 - **향후 계획:** 후속 연구로 7가지 유형 분류에 대해 **Transfer Learning 기법**을 적용하거나, 각 유형별 임베딩 공간을 분리하는 **Metric Learning** 방식을 도입하여 소수 유형에 대한 분류 성능을 더욱 끌어올릴 계획입니다.
 
-[📂 프로젝트 산출물 및 상세 기록](https://www.notion.so/2a7fc91e2372808db38ff31f3881d1ce?pvs=21)
+[📂 프로젝트 산출물 및 상세 기록](https://www.notion.so/HateSpeech-Detector-NLP-2-2a7fc91e237280dd81edfe2e631934c2?source=copy_link)
