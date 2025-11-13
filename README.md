@@ -1,171 +1,92 @@
-| 구분 | 내용 |
-| --- | --- |
-| **팀 이름** | 졸문철TV |
-| **팀원** | 홍석우 (팀장), 최윤성, 엄정민 |
-| **개발 기간** | 2022년 (발표일: 2022년 12월 2일) |
-| **깃허브 기여자** | @zcx1119son 외 2인 |
+# **🇰🇷 HateSpeech-Detector-NLP: 한국어 유해성 텍스트 2단계 분류 모델**
 
-### 🎯 나의 핵심 기여 (My Core Contributions)
+## **💡 프로젝트 개요 (Project Overview)**
 
-이 프로젝트에서 저는 **핵심 졸음 판별 알고리즘 설계 및 구현**을 담당했습니다.
+본 프로젝트는 온라인상에서 발생하는 **혐오 발언, 비하, 스팸 등의 유해성 텍스트**를 자동으로 탐지하고 그 유형을 분류하는 **2단계 분류 (Two-Tier Classification)** AI 모델 개발을 목표로 합니다. 이 모델은 사용자 콘텐츠 관리 및 모더레이션 시스템의 핵심 기능을 수행하며, **AI Hub** 제공 데이터셋의 계층적 구조에 최적화되어 설계되었습니다.
 
-1. **기술 기반 기준 확립:** 기존 연구 논문([4] EAR 기반 논문 등)을 심층적으로 분석하여, 단순 타이머 방식이 아닌 운전자의 생체적 반응을 정량화하는 **Eye Aspect Ratio (EAR)** 지표를 최종 졸음 판단 기준으로 확립했습니다.
-2. **3가지 지표 통합 및 강건성 확보:** 눈 깜빡임(EAR), 하품(MAR), 머리 기울임(Head Pose) 세 가지 지표의 상호 보완적인 로직을 통합하여 단일 지표의 오판율을 낮추고, 시스템의 강건성(Robustness)을 크게 향상시켰습니다.
-3. **임계값 최적화:** 실제 운전자 환경 시뮬레이션을 통해 EAR **0.25** 및 MAR **0.79**의 임계값을 결정하고, 알람이 발생하기 위한 최소 연속 프레임(3 프레임)을 튜닝하여 오경보를 최소화했습니다.
+- **1차 분류:** 텍스트의 유해성(Toxic) 여부 판단 (유해 / 정상)
+- **2차 분류:** 1차에서 유해로 판별된 텍스트의 구체적인 유형 분류
+- **저장소 URL:** https://github.com/zcx1119son/Korean-Toxicity-Model
 
-## **🌟 프로젝트 개요**
+## **⚙️ 기술 스택 (Tech Stack)**
 
-이 프로젝트는 **OpenCV**와 **Dlib** 라이브러리를 활용하여 **실시간**으로 운전자의 얼굴을 분석하고, **눈 감김, 하품, 머리 기울임**의 세 가지 복합적인 징후를 동시에 감지하여 졸음 운전을 예방하는 캡스톤 프로젝트입니다. **AI** 기반의 **Computer Vision** 기술을 적용하여 높은 정확도의 실시간 경고 시스템을 구현하는 데 중점을 두었습니다.
-
-## **⚙️ 주요 기술 스택 (Tech Stack)**
-
-| 분류 | 기술 | 역할 |
+| 구분 | 기술 / 라이브러리 | 상세 내용 |
 | --- | --- | --- |
-| **핵심 언어** | **Python 3.10** | 전체 시스템 개발 및 알고리즘 구현 |
-| **컴퓨터 비전** | **OpenCV**, **imutils** | 실시간 비디오 스트림 처리 및 화면 출력 |
-| **얼굴 랜드마크** | **Dlib** (`shape_predictor_68_face_landmarks.dat`) | 얼굴 영역 및 **68**개 랜드마크 추출 |
-| **핵심 알고리즘** | **EAR**, **MAR**, **PnP** | 졸음 징후 감지 및 머리 포즈 추정 |
-| **데이터 처리** | **NumPy**, **SciPy** | 행렬 연산 및 유클리디안 거리 계산 |
+| **핵심 모델** | **BERT (KcBERT Fine-tuning)** | 한국어에 최적화된 BERT 모델 기반으로 파인튜닝하여 높은 성능 달성 |
+| **딥러닝** | PyTorch, Hugging Face Transformers | 모델 구현 및 학습, 사전 학습 모델 로드 |
+| **데이터 처리** | Pandas, Numpy, Scikit-learn | 데이터 전처리, 학습/검증 분할, 성능 평가 |
+| **개발 환경** | Jupyter Notebook (.ipynb) | 실험 및 결과 도출 환경 |
 
-## **💡 핵심 기능 및 알고리즘**
+## **✅ 최종 성능 및 결과**
 
-### **1. 3가지 복합 졸음 감지 알고리즘**
+BERT 기반의 2단계 분류 구조를 통해 유해성 판단 및 유형 분류에서 높은 성능을 달성했습니다.
 
-단일 지표의 한계를 극복하기 위해 3가지 지표를 통합하여 졸음 감지 정확도를 높였습니다.
-
-| 지표 | 로직 설명 | 구현 파일 | 임계값 |
-| --- | --- | --- | --- |
-| **Eye Aspect Ratio (EAR)** | 눈의 수직 거리와 수평 거리의 비율을 계산하여 눈 감김 상태를 감지합니다. **연속된 프레임 (3 프레임 이상)** 동안 임계값 이하일 경우 경고를 발생시킵니다. | `EAR.py` | **0.25** |
-| **Mouth Aspect Ratio (MAR)** | 입의 수직 거리와 수평 거리의 비율을 계산하여 하품(입 벌림) 상태를 감지합니다. | `MAR.py` | **0.79** |
-| **Head Pose Estimation** | **OpenCV**의 `solvePnP` 함수를 사용하여 얼굴의 **3D** 포즈를 추정하고, 오일러 각도를 변환하여 **머리 기울임 각도**를 계산해 주시 태만을 감지합니다. | `HeadPose.py` | (로직 내부 정의) |
-
-## **💻 핵심 알고리즘 코드 스니펫 (Core Algorithm Code Snippets)**
-
-### **1. Eye Aspect Ratio (EAR) 계산 로직**
-
-`EAR.py` 파일에 정의된 눈 종횡비 계산 함수입니다. 눈의 6개 랜드마크를 활용하여 눈 깜빡임을 정량화합니다.
-
-```python
-from scipy.spatial import distance as dist
-
-def eye_aspect_ratio(eye):
-    # 수직 눈 좌표 거리: (p2, p6)와 (p3, p5)의 유클리디안 거리
-    # [Dlib의 68개 랜드마크 중 눈의 좌표 번호가 eye 배열의 인덱스로 매핑됨]
-    A = dist.euclidean(eye[1], eye[5])
-    B = dist.euclidean(eye[2], eye[4])
-
-    # 수평 눈 좌표 거리: (p1, p4)의 유클리디안 거리 (눈꼬리와 눈 앞머리)
-    C = dist.euclidean(eye[0], eye[3])
-
-    # 눈 종횡비 계산: EAR = (수직거리_A + 수직거리_B) / (2.0 * 수평거리_C)
-    ear = (A + B) / (2.0 * C)
-    return ear
-
-```
-
-### **2. Mouth Aspect Ratio (MAR) 계산 로직**
-
-`Mar.py` 파일에 정의된 입 종횡비 계산 함수입니다. 입의 12개 랜드마크 중 6개를 활용하여 하품 상태를 감지합니다.
-
-```python
-from scipy.spatial import distance as dist
-
-def mouth_aspect_ratio(mouth):
-    # 수직 입의 좌표 거리: (p51, p59)와 (p53, p57)
-    A = dist.euclidean(mouth[2], mouth[10])
-    B = dist.euclidean(mouth[4], mouth[8])
-
-    # 수평 입의 좌표 거리: (p49, p55)
-    C = dist.euclidean(mouth[0], mouth[6])
-
-    # 입 비율 계산: MAR = (수직거리_A + 수직거리_B) / (2.0 * 수평거리_C)
-    mar = (A + B) / (2.0 * C)
-    return mar
-
-```
-
-### **3. 머리 포즈 추정 (Head Pose Estimation) 핵심**
-
-`HeadPose.py`는 **3D 모델 좌표**와 **2D 이미지 좌표**를 이용해 카메라 행렬을 구성하고, **OpenCV**의 **solvePnP** 함수를 사용해 실시간으로 머리의 회전 벡터를 추정합니다.
-
-```python
-import cv2
-import numpy as np
-
-def getHeadTiltAndCoords(size, image_points, frame_height):
-    # 카메라 행렬 구성
-    focal_length = size[1]
-    center = (size[1]/2, size[0]/2)
-
-    # 3x3 카메라 행렬 (임시 값, 실제 구현에 맞게 조정 필요)
-    camera_matrix = np.array([
-        [focal_length, 0, center[0]],
-        [0, focal_length, center[1]],
-        [0, 0, 1]
-    ], dtype="double")
-
-    dist_coeffs = np.zeros((4, 1))
-
-    # PnP (Perspective-n-Point) 알고리즘을 사용해 머리 자세 추정
-    (_, rotation_vector, translation_vector) = cv2.solvePnP(
-        model_points, image_points, camera_matrix, dist_coeffs,
-        flags=cv2.SOLVEPNP_ITERATIVE
-    )
-
-    # 회전 벡터를 행렬로 변환 후 오일러 각도를 추출하여 'head_tilt_degree' 계산
-    # ... (rotationMatrixToEulerAngles 호출)
-    return rotation_vector, translation_vector  # 예시 반환
-
-```
-
-## **🛠️ 실행 방법 (How to Run)**
-
-### **1. 환경 설정 및 필수 라이브러리 설치**
-
-프로젝트에 필요한 모든 라이브러리 목록과 정확한 버전은 **requirements.txt** 파일에 명시되어 있습니다. dlib 라이브러리의 특성상, 설치에 시간이 걸릴 수 있습니다.
-
-**설치 명령어:**
-
-pip install -r requirements.txt
-
-### **2. dlib 랜드마크 데이터 다운로드**
-
-시스템이 얼굴 랜드마크를 정확하게 예측하기 위해 **Dlib**의 랜드마크 예측 모델 파일이 필요합니다.
-
-1. [shape_predictor_68_face_landmarks.dat](https://www.google.com/search?q=%5Bhttp://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2%5D%5C(http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2%5C)) 파일을 다운로드합니다.
-2. 압축을 해제한 후, 해당 파일을 저장소 내의 **dlib_shape_predictor** 폴더 안에 위치시킵니다.
-
-### **3. 애플리케이션 실행**
-
-메인 실행 파일을 **Python**으로 실행합니다. (카메라 장치가 연결되어 있어야 합니다.)
-
-python "Driver Drowsiness [Detection.py](http://detection.py/)"
-
-- **결과: Webcam**이 활성화되며 실시간으로 운전자의 눈, 입, 고개 상태를 감지하고 화면에 경고 메시지를 출력합니다.
-
-## **🤝 기여 및 참고 자료 (Contributions & References)**
-
-이 프로젝트는 기존의 **Computer Vision** 분야에서 확립된 학술 연구 및 공개된 기술을 기반으로 구현되었습니다.
-
-### **1. 프로젝트 관련 문서 및 자료**
-
-| 자료 | 설명 | 링크 |
+| 분류 단계 | 모델 특징 | 평가 지표 (F1-Score 기준) |
 | --- | --- | --- |
-| **졸업 작품 전체 자료** | 발표 **PPT**, 최종 보고서 **PDF**, 등 모든 프로젝트 문서 자료 | [Google Drive 상세 자료 링크](https://drive.google.com/drive/folders/1b5E_JoIQbwww3fD74A_qyX92ET1qoz7u?usp=sharing) |
-| **소스 코드 저장소** | 프로젝트 **Python** 소스 코드 및 **README** | [Git hub사이트 링크](https://github.com/zcx1119son/DL-Drowsiness-Detection-Capstone)  |
+| **1차 분류 (유해/정상)** | 이진 분류 모델 | **F1-Score: 0.95 이상** |
+| **2차 분류 (유형 분류)** | 다중 분류 모델 | **F1-Score: 0.88 이상** |
 
-### **2. 핵심 알고리즘 및 학술적 참고 문헌**
+## 💡 트러블 슈팅 및 기여 (Troubleshooting & Contribution)
 
-| 번호 | 참고 문헌 / 자료 | 분류 |
+### 1. **핵심 설계 동기: 데이터셋 구조에 기반한 2단계 파이프라인**
+
+본 모델은 **AI Hub 데이터셋의 계층적 구조**에 맞춰 문제를 해결하기 위해 2단계 파이프라인을 필수적으로 도입했습니다. 이 설계는 효율성뿐만 아니라 비즈니스 안정성을 위한 **가장 강력한 안전장치** 역할을 합니다.
+
+- **효율적인 분류:** 모든 텍스트를 7가지 유형으로 분류하는 대신, 1차 분류를 통해 유해 텍스트에만 2차 분류 모델을 적용하여 전체 시스템의 추론 시간 효율을 높였습니다.
+
+### 2. 기술적 난관 극복: 불균형 데이터 해결 이중 전략 (강조)
+
+1차 분류(정상/유해) 모델 훈련 직전에 유해 텍스트가 전체 훈련 데이터에서 약 **3.8%** (정상 31,306개 vs. 유해 1,229개)에 불과한 **심각한 클래스 불균형** 문제를 확인했습니다. 이는 모델이 소수 클래스를 무시하고 편향될 위험이 있었습니다.
+
+이 문제를 해결하기 위해 **데이터 샘플링**과 **손실 함수 가중치 부여**라는 **이중 전략(Two-Pronged Strategy)**을 병행하여 적용했습니다.
+
+### ① 데이터 차원 해결: 정상 클래스 다운 샘플링(Down-sampling)
+
+훈련 효율성 제고 및 불균형 완화를 위해, 압도적으로 많은 **원본 정상 텍스트 31,306개 중 무작위로 15,000개만 선택**하여 훈련 데이터셋을 구성했습니다. 이를 통해 유해 클래스(1,229개) 대비 비율을 약 **12:1** 수준으로 획기적으로 낮췄습니다.
+
+### ② 손실 함수 차원 해결: Weighted Cross-Entropy Loss 도입
+
+다운 샘플링 후에도 존재하는 불균형에 대응하고 오탐률(False Positive)을 최소화하기 위해 **Weighted Cross-Entropy Loss** 함수를 커스텀하여 적용했습니다.
+
+- **가중치 계산 및 적용:** 불균형 비율에 따라 유해 클래스에 약 **13.2배** 높은 가중치(정상: 0.5196 vs. 유해: 13.2364)를 부여했습니다.
+- **결과:** 이 **이중 전략의 시너지 효과** 덕분에 정상 텍스트의 오탐률(FP Rate)을 **0.41%**로 극단적으로 낮추는 데 성공했습니다. 이는 서비스 도입 시 신뢰성을 보장하는 핵심 성과입니다.
+
+## **🛠️ 코드 및 재현 안내 (Reproduction Guide)**
+
+프로젝트 코드, 대용량 모델 파일, 데이터셋 출처, 그리고 상세 보고서까지 **모든 자료가 아래 링크에 통합**되어 있습니다.
+
+### **1. 📂 코드 및 의존성 파일**
+
+- **메인 코드 (.ipynb):** [Korean_Toxic_Text_Classification.ipynb](https://github.com/zcx1119son/Korean-Toxicity-Model/blob/master/Korean_Toxic_Text_Classification.ipynb)
+- **환경 설정:** requirements.txt (프로젝트 재현을 위한 필수 라이브러리 목록)
+
+### **2. 💾 대용량 자료 다운로드 링크 (필수)**
+
+| 자원 | 용량 | 링크 |
 | --- | --- | --- |
-| [1] | 이승학. “졸음운전과 교통사고” | 국내 연구 (교통사고) |
-| [2] | 이대연, “졸음방지를 위한 안면검출 해석과 서비스에 관한 연구” | 국내 연구 (졸음방지) |
-| [3] | Vahid Kazemi and Josephine Sullivan, “One Millisecond Face Alignment with an Ensemble of Regression Trees” **Dlib** 랜드마크 모델 기반 논문) | **핵심 기술 논문** |
-| [4] | Tereza Soukupovă and Jan Ćech, “Real-TIme Eye Blink Detection using Facial Landmarks” ($\\text{EAR}$ 기반) | **핵심 기술 논문** |
-| [5] | 오미연, “얼굴 특징점 기반의 졸음운전 감지 알고리즘” | 국내 연구 (감지 알고리즘) |
-| [6] | Philipp P. Cafﬁer, Udo Erdmann ,Peter Ullsperger, “The spontaneous eye-blink as sleepiness indicator in patients with obstructive sleep apnoea syndrome-a pilot study” | 학술 논문 (졸음 지표) |
-| [7] | dohyeon2’s log, “ **영상처리** 2D영상에서 물체까지 3D 거리 구하기” **PnP** 구현 참고) | 기술 블로그/구현 가이드 |
+| **학습 데이터셋 (AI Hub)** | 대용량 | [AI Hub 다운로드 페이지 (국가기록물 대상)](https://www.aihub.or.kr/aihubdata/data/view.do?pageIndex=1&currMenu=115&topMenu=100&srchOptnCnd=OPTNCND001&searchKeyword=%EA%B5%AD%EA%B0%80%EA%B8%B0%EB%A1%9D%EB%AC%BC&srchDetailCnd=DETAILCND001&srchOrder=ORDER001&srchPagePer=20&aihubDataSe=data&dataSetSn=71788) |
+| **학습된 모델 파일 (772MB)** | **약 772MB** | [Google Drive 모델 파일 다운로드](https://drive.google.com/drive/folders/1dL8Y7zl4BddPBDbXeHF5BwB5hf-1N_b7?usp=sharing) |
+| **상세 PPT/PDF 자료** | 보조 보고서 | [Google Drive 상세 자료 링크](https://drive.google.com/drive/folders/1c32AJIo_1g993qb2vQyJK4hUfzu8aug4?usp=sharing) |
 
-[제목 없음](https://www.notion.so/2a72e77d543b80c7b032c62beee1c3a5?pvs=21)
+### **3. 재현 단계 (Replication Steps)**
 
-[📂 프로젝트 산출물 및 상세 기록](https://www.notion.so/2a72e77d543b800e962be81b24a58e87?pvs=21)
+1. **Repository Clone:** 본 GitHub 저장소를 로컬로 복제합니다.
+2. **환경 설정:** requirements.txt를 사용하여 Python 환경을 설정합니다. (pip install -r requirements.txt)
+3. **파일 다운로드:** 상단의 **AI Hub 데이터셋**과 **Google Drive 모델 파일**을 모두 다운로드합니다.
+4. **코드 실행:** Korean_Toxic_Text_Classification.ipynb 파일을 열어 전처리, 모델 로드, 예측 결과를 순서대로 확인합니다.
+
+## 🚀 프로젝트 회고 및 향후 개선 방향
+
+### 1. 프로젝트를 통해 배운 점
+
+- **기술 선택의 당위성:** 단순한 최고 성능 모델(BERT)의 적용을 넘어, **데이터셋의 특성(계층성, 불균형)을 분석**하여 2단계 파이프라인과 커스텀 손실 함수라는 **최적화된 방법론**을 도출하는 능력을 체득했습니다.
+- **비즈니스 목표의 이해:** F1-Score만 높이는 것이 아니라, **정상 텍스트의 오탐률을 낮추는 것**이 실제 서비스에서의 신뢰성 확보에 가장 중요하다는 점을 이해하고, 목표 지표를 설정하여 문제를 해결했습니다.
+
+### 2. 모델의 한계 및 향후 계획
+
+- **현재 한계:** 2차 분류(7가지 유형)의 경우, 유형별로 데이터 희소성이 더욱 심하여 1차 분류 대비 성능(F1-Score 0.88)에 한계가 있었습니다.
+- **향후 계획:** 후속 연구로 7가지 유형 분류에 대해 **Transfer Learning 기법**을 적용하거나, 각 유형별 임베딩 공간을 분리하는 **Metric Learning** 방식을 도입하여 소수 유형에 대한 분류 성능을 더욱 끌어올릴 계획입니다.
+
+[📂 프로젝트 산출물 및 상세 기록](https://www.notion.so/2a7fc91e2372808db38ff31f3881d1ce?pvs=21)
+
+[제목 없음](https://www.notion.so/2a7fc91e237280eeb23bc3a4c7d31e86?pvs=21)
